@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +31,15 @@ public class FileUploadController {
             try {
                 // Save the uploaded file to a temporary location
                 Path tempDir = Files.createTempDirectory("uploaded-zip");
-                File tempFile = new File(tempDir.toFile(), file.getOriginalFilename());
-                file.transferTo(tempFile);
+                Path tempFilePath = tempDir.resolve(file.getOriginalFilename());
+                Files.copy(file.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
 
                 // Analyze the contents of the ZIP file
-                List<String> outdatedDependencies = dependencyChecker.getOutdatedDependencies(new File(tempDir.toFile(), "build.gradle"));
-                Map<String, List<String>> deprecatedMethods = deprecatedMethodsService.findDeprecatedMethodsInZip(Files.newInputStream(tempFile.toPath()));
+                List<String> outdatedDependencies = dependencyChecker.getOutdatedDependencies(tempFilePath.toFile());
+                Map<String, List<String>> deprecatedMethods = deprecatedMethodsService.findDeprecatedMethodsInZip(Files.newInputStream(tempFilePath));
 
                 // Clean up temporary file
-                Files.delete(tempFile.toPath());
+                Files.delete(tempFilePath);
 
                 // Return the analysis report
                 return Map.of(
