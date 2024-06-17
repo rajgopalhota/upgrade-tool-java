@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Java Project Upgrade Tool</title>
+</head>
+<body>
+<h1>Java Project Upgrade Tool</h1>
+<form method="post" enctype="multipart/form-data" th:action="@{/upload}">
+    <input type="file" name="file" required />
+    <button type="submit">Upload and Upgrade</button>
+</form>
+</body>
+</html>

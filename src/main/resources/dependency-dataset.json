@@ -1,0 +1,222 @@
+{
+  "dependencies": [
+    {
+      "groupId": "org.springframework.boot",
+      "artifactId": "spring-boot-starter-web",
+      "minVersion": "2.5.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework.boot",
+      "artifactId": "spring-boot-starter-data-jpa",
+      "minVersion": "2.5.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework.boot",
+      "artifactId": "spring-boot-starter-security",
+      "minVersion": "2.5.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework.boot",
+      "artifactId": "spring-boot-starter-test",
+      "minVersion": "2.5.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-core",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.apache.commons",
+      "artifactId": "commons-lang3",
+      "minVersion": "3.11",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.slf4j",
+      "artifactId": "slf4j-api",
+      "minVersion": "1.7.30",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.hibernate",
+      "artifactId": "hibernate-core",
+      "minVersion": "5.4.0.Final",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.junit.jupiter",
+      "artifactId": "junit-jupiter-api",
+      "minVersion": "5.7.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.thymeleaf",
+      "artifactId": "thymeleaf-spring5",
+      "minVersion": "3.0.12.RELEASE",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "com.h2database",
+      "artifactId": "h2",
+      "minVersion": "1.4.200",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.flywaydb",
+      "artifactId": "flyway-core",
+      "minVersion": "7.5.1",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "javax.xml.bind",
+      "artifactId": "jaxb-api",
+      "minVersion": "2.3.0",
+      "deprecatedInJava17": true
+    },
+    {
+      "groupId": "javax.annotation",
+      "artifactId": "javax.annotation-api",
+      "minVersion": "1.3.2",
+      "deprecatedInJava17": true
+    },
+    {
+      "groupId": "org.apache.logging.log4j",
+      "artifactId": "log4j-api",
+      "minVersion": "2.13.3",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "com.fasterxml.jackson.core",
+      "artifactId": "jackson-databind",
+      "minVersion": "2.11.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "com.google.guava",
+      "artifactId": "guava",
+      "minVersion": "30.0-jre",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.apache.httpcomponents",
+      "artifactId": "httpclient",
+      "minVersion": "4.5.13",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.mockito",
+      "artifactId": "mockito-core",
+      "minVersion": "3.7.7",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.aspectj",
+      "artifactId": "aspectjrt",
+      "minVersion": "1.9.6",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-web",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-webmvc",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-beans",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-context",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-aop",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    },
+    {
+      "groupId": "org.springframework",
+      "artifactId": "spring-expression",
+      "minVersion": "5.3.0",
+      "deprecatedInJava17": false
+    }
+  ],
+  "methods": [
+    {
+      "package": "java.util",
+      "class": "Hashtable",
+      "method": "enumerate",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.awt",
+      "class": "Frame",
+      "method": "show",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "javax.security.cert",
+      "class": "Certificate",
+      "method": "getEncoded",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.sql",
+      "class": "DriverManager",
+      "method": "setLogStream",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Date",
+      "method": "parse",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Vector",
+      "method": "addElement",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Vector",
+      "method": "removeElement",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Dictionary",
+      "method": "elements",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Observer",
+      "method": "update",
+      "deprecatedInJava17": true
+    },
+    {
+      "package": "java.util",
+      "class": "Stack",
+      "method": "empty",
+      "deprecatedInJava17": true
+    }
+  ]
+}
