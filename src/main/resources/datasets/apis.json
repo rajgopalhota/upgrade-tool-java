@@ -1,0 +1,32 @@
+[
+  {
+      "package": "javax.xml.bind",
+      "class": "JAXB",
+      "deprecatedInJava17": true,
+      "replacement": "Use external libraries like jakarta.xml.bind or other JAXB implementations."
+    },
+    {
+      "package": "javax.annotation",
+      "class": "PostConstruct",
+      "deprecatedInJava17": true,
+      "replacement": "Use jakarta.annotation.PostConstruct or javax.inject.Inject instead."
+    },
+    {
+      "package": "javax.xml.ws",
+      "class": "WebService",
+      "deprecatedInJava17": true,
+      "replacement": "Use external libraries like jakarta.xml.ws or other JAX-WS implementations."
+    },
+    {
+      "package": "javax.activation",
+      "class": "DataHandler",
+      "deprecatedInJava17": true,
+      "replacement": "Use external libraries like jakarta.activation or other JAF implementations."
+    },
+    {
+      "package": "javax.jws",
+      "class": "WebService",
+      "deprecatedInJava17": true,
+      "replacement": "Use jakarta.jws.WebService or other JAX-WS implementations."
+    }
+]

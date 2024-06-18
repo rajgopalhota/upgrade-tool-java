@@ -15,17 +15,31 @@ public class DependencyDataLoader {
 
     private List<Map<String, Object>> dependencies;
     private List<Map<String, Object>> methods;
+    private List<Map<String, Object>> apis;
 
     @PostConstruct
     public void init() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        try (InputStream inputStream = getClass().getResourceAsStream("/dependency-dataset.json")) {
-            if (inputStream == null) {
-                throw new IOException("Dependency dataset not found");
+
+        try (InputStream depStream = getClass().getResourceAsStream("/datasets/dependencies.json")) {
+            if (depStream == null) {
+                throw new IOException("Dependencies dataset not found");
             }
-            Map<String, List<Map<String, Object>>> data = mapper.readValue(inputStream, new TypeReference<>() {});
-            dependencies = data.get("dependencies");
-            methods = data.get("methods");
+            dependencies = mapper.readValue(depStream, new TypeReference<>() {});
+        }
+
+        try (InputStream methodsStream = getClass().getResourceAsStream("/datasets/methods.json")) {
+            if (methodsStream == null) {
+                throw new IOException("Methods dataset not found");
+            }
+            methods = mapper.readValue(methodsStream, new TypeReference<>() {});
+        }
+
+        try (InputStream apisStream = getClass().getResourceAsStream("/datasets/apis.json")) {
+            if (apisStream == null) {
+                throw new IOException("APIs dataset not found");
+            }
+            apis = mapper.readValue(apisStream, new TypeReference<>() {});
         }
     }
 
@@ -35,5 +49,9 @@ public class DependencyDataLoader {
 
     public List<Map<String, Object>> getMethods() {
         return methods;
+    }
+
+    public List<Map<String, Object>> getApis() {
+        return apis;
     }
 }

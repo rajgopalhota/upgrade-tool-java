@@ -1,0 +1,72 @@
+[
+    {
+      "package": "java.util",
+      "class": "Hashtable",
+      "method": "enumerate",
+      "deprecatedInJava17": true,
+      "replacement": "Use keySet().iterator() or entrySet().iterator() instead."
+    },
+    {
+      "package": "java.awt",
+      "class": "Frame",
+      "method": "show",
+      "deprecatedInJava17": true,
+      "replacement": "Use setVisible(true) instead."
+    },
+    {
+      "package": "javax.security.cert",
+      "class": "Certificate",
+      "method": "getEncoded",
+      "deprecatedInJava17": true,
+      "replacement": "Use java.security.cert.Certificate instead."
+    },
+    {
+      "package": "java.sql",
+      "class": "DriverManager",
+      "method": "setLogStream",
+      "deprecatedInJava17": true,
+      "replacement": "Use setLogWriter(PrintWriter) instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Date",
+      "method": "parse",
+      "deprecatedInJava17": true,
+      "replacement": "Use DateTimeFormatter or SimpleDateFormat instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Vector",
+      "method": "addElement",
+      "deprecatedInJava17": true,
+      "replacement": "Use add(E) instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Vector",
+      "method": "removeElement",
+      "deprecatedInJava17": true,
+      "replacement": "Use remove(Object) instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Dictionary",
+      "method": "elements",
+      "deprecatedInJava17": true,
+      "replacement": "Use values().iterator() instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Observer",
+      "method": "update",
+      "deprecatedInJava17": true,
+      "replacement": "Use java.beans.PropertyChangeListener and PropertyChangeSupport instead."
+    },
+    {
+      "package": "java.util",
+      "class": "Stack",
+      "method": "empty",
+      "deprecatedInJava17": true,
+      "replacement": "Use isEmpty() instead."
+    }
+  ]

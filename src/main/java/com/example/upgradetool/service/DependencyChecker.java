@@ -1,5 +1,6 @@
-package com.example.upgradetool.utils;
+package com.example.upgradetool.service;
 
+import com.example.upgradetool.utils.DependencyDataLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;

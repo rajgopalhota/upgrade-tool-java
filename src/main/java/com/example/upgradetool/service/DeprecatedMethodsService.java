@@ -1,33 +1,41 @@
 package com.example.upgradetool.service;
 
+import com.example.upgradetool.utils.DependencyDataLoader;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Service
 public class DeprecatedMethodsService {
 
-    public Map<String, List<String>> findDeprecatedMethodsInZip(InputStream zipInputStream) {
-        Map<String, List<String>> deprecatedMethodsMap = new HashMap<>();
+    @Autowired
+    private DependencyDataLoader dataLoader;
+
+    public Map<String, List<Map<String, String>>> findDeprecatedMethodsInZip(InputStream zipInputStream) {
+
+        Map<String, List<Map<String, String>>> deprecatedMethodsMap = new HashMap<>();
         JavaParser javaParser = new JavaParser(); // Create an instance of JavaParser
 
         try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
+
             ZipEntry zipEntry;
+
             while ((zipEntry = zis.getNextEntry()) != null) {
                 if (!zipEntry.isDirectory() && zipEntry.getName().endsWith(".java")) {
+
                     // Read the content of the .java file
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     byte[] buffer = new byte[1024];
@@ -43,21 +51,24 @@ public class DeprecatedMethodsService {
                     if (result.isSuccessful()) {
                         CompilationUnit cu = result.getResult().orElse(null); // Get the CompilationUnit
                         if (cu != null) {
-                            List<String> deprecatedMethods = new ArrayList<>();
+                            List<Map<String, String>> deprecatedMethods = new ArrayList<>();
                             cu.accept(new VoidVisitorAdapter<Void>() {
                                 @Override
-                                public void visit(com.github.javaparser.ast.body.MethodDeclaration n, Void arg) {
+                                public void visit(MethodDeclaration n, Void arg) {
                                     super.visit(n, arg);
                                     if (n.getAnnotationByName("Deprecated").isPresent()) {
-                                        deprecatedMethods.add(n.getNameAsString());
+                                        String methodName = n.getNameAsString();
+                                        String replacement = findReplacementForMethod(methodName);
+                                        deprecatedMethods.add(Map.of("methodName", methodName, "replacement", replacement));
                                     }
                                 }
                             }, null);
                             deprecatedMethodsMap.put(zipEntry.getName(), deprecatedMethods);
                         }
                     } else {
-                        // Handle parse errors if needed
-                        System.err.println("Parsing failed for: " + zipEntry.getName());
+                        // Handle parse errors
+                        List<String> compilationErrors = handleParseErrors(result, zipEntry.getName());
+                        deprecatedMethodsMap.put(zipEntry.getName(), mapErrorsToMap(compilationErrors));
                     }
                 }
                 zis.closeEntry();
@@ -67,4 +78,64 @@ public class DeprecatedMethodsService {
         }
         return deprecatedMethodsMap;
     }
+
+
+    private String findReplacementForMethod(String methodName) {
+        for (Map<String, Object> method : dataLoader.getMethods()) {
+            Object methodNameValue = method.get("methodName");
+            if (methodNameValue != null && methodNameValue.equals(methodName)) {
+                return (String) method.get("replacement");
+            }
+        }
+        return "No replacement found";
+    }
+
+
+    private List<String> handleParseErrors(ParseResult<?> result, String fileName) {
+        List<String> errors = new ArrayList<>();
+        result.getProblems().forEach(problem -> {
+            errors.add("Compilation error in " + fileName + ": " + problem.getMessage());
+        });
+        return errors;
+    }
+
+    public List<Map<String, String>> getCompilationErrors(InputStream zipInputStream) {
+        List<Map<String, String>> compilationErrors = new ArrayList<>();
+        JavaParser javaParser = new JavaParser();
+
+        try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (!zipEntry.isDirectory() && zipEntry.getName().endsWith(".java")) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = zis.read(buffer)) > -1) {
+                        byteArrayOutputStream.write(buffer, 0, len);
+                    }
+                    byteArrayOutputStream.flush();
+                    byte[] javaFileBytes = byteArrayOutputStream.toByteArray();
+
+                    ParseResult<CompilationUnit> result = javaParser.parse(new ByteArrayInputStream(javaFileBytes));
+                    if (!result.isSuccessful()) {
+                        List<String> errors = handleParseErrors(result, zipEntry.getName());
+                        compilationErrors.addAll(mapErrorsToMap(errors));
+                    }
+                }
+                zis.closeEntry();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return compilationErrors;
+    }
+
+    private List<Map<String, String>> mapErrorsToMap(List<String> compilationErrors) {
+        List<Map<String, String>> errorMaps = new ArrayList<>();
+        for (String error : compilationErrors) {
+            errorMaps.add(Collections.singletonMap("error", error));
+        }
+        return errorMaps;
+    }
+
 }
