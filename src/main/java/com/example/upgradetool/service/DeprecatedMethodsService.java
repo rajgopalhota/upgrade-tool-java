@@ -25,18 +25,14 @@ public class DeprecatedMethodsService {
     private DependencyDataLoader dataLoader;
 
     public Map<String, List<Map<String, String>>> findDeprecatedMethodsInZip(InputStream zipInputStream) {
-
         Map<String, List<Map<String, String>>> deprecatedMethodsMap = new HashMap<>();
-        JavaParser javaParser = new JavaParser(); // Create an instance of JavaParser
+        JavaParser javaParser = new JavaParser();
 
         try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
-
             ZipEntry zipEntry;
 
             while ((zipEntry = zis.getNextEntry()) != null) {
                 if (!zipEntry.isDirectory() && zipEntry.getName().endsWith(".java")) {
-
-                    // Read the content of the .java file
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     byte[] buffer = new byte[1024];
                     int len;
@@ -46,10 +42,9 @@ public class DeprecatedMethodsService {
                     byteArrayOutputStream.flush();
                     byte[] javaFileBytes = byteArrayOutputStream.toByteArray();
 
-                    // Parse the Java file
                     ParseResult<CompilationUnit> result = javaParser.parse(new ByteArrayInputStream(javaFileBytes));
                     if (result.isSuccessful()) {
-                        CompilationUnit cu = result.getResult().orElse(null); // Get the CompilationUnit
+                        CompilationUnit cu = result.getResult().orElse(null);
                         if (cu != null) {
                             List<Map<String, String>> deprecatedMethods = new ArrayList<>();
                             cu.accept(new VoidVisitorAdapter<Void>() {
@@ -66,7 +61,6 @@ public class DeprecatedMethodsService {
                             deprecatedMethodsMap.put(zipEntry.getName(), deprecatedMethods);
                         }
                     } else {
-                        // Handle parse errors
                         List<String> compilationErrors = handleParseErrors(result, zipEntry.getName());
                         deprecatedMethodsMap.put(zipEntry.getName(), mapErrorsToMap(compilationErrors));
                     }
@@ -79,17 +73,18 @@ public class DeprecatedMethodsService {
         return deprecatedMethodsMap;
     }
 
-
     private String findReplacementForMethod(String methodName) {
-        for (Map<String, Object> method : dataLoader.getMethods()) {
-            Object methodNameValue = method.get("methodName");
-            if (methodNameValue != null && methodNameValue.equals(methodName)) {
-                return (String) method.get("replacement");
+        List<Map<String, Object>> methods = dataLoader.getMethods();
+        if (methods != null) {
+            for (Map<String, Object> method : methods) {
+                Object methodNameValue = method.get("methodName");
+                if (methodNameValue != null && methodNameValue.equals(methodName)) {
+                    return (String) method.get("replacement");
+                }
             }
         }
         return "No replacement found";
     }
-
 
     private List<String> handleParseErrors(ParseResult<?> result, String fileName) {
         List<String> errors = new ArrayList<>();
@@ -137,5 +132,4 @@ public class DeprecatedMethodsService {
         }
         return errorMaps;
     }
-
 }

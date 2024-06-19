@@ -3,9 +3,10 @@ package com.example.upgradetool.service;
 import com.example.upgradetool.utils.DependencyDataLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.nio.charset.StandardCharsets;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,9 @@ public class DependencyChecker {
     private DependencyDataLoader dataLoader;
 
     public List<String> getOutdatedDependencies(File buildFile) throws IOException {
-
         List<String> outdatedDependencies = new ArrayList<>();
         String content = Files.readString(buildFile.toPath(), StandardCharsets.ISO_8859_1);
+
         // Regex to match dependencies in build.gradle
         Pattern pattern = Pattern.compile("implementation\\s*'([^:]+):([^:]+):([^']+)'");
         Matcher matcher = pattern.matcher(content);
