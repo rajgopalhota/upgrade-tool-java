@@ -4,7 +4,7 @@ import com.example.upgradetool.utils.DependencyDataLoader;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -27,6 +26,7 @@ public class DeprecatedMethodsService {
     public Map<String, List<Map<String, String>>> findDeprecatedMethodsInZip(InputStream zipInputStream) {
         Map<String, List<Map<String, String>>> deprecatedMethodsMap = new HashMap<>();
         JavaParser javaParser = new JavaParser();
+        List<Map<String, Object>> deprecatedMethodsList = dataLoader.getMethods();
 
         try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
             ZipEntry zipEntry;
@@ -49,11 +49,11 @@ public class DeprecatedMethodsService {
                             List<Map<String, String>> deprecatedMethods = new ArrayList<>();
                             cu.accept(new VoidVisitorAdapter<Void>() {
                                 @Override
-                                public void visit(MethodDeclaration n, Void arg) {
+                                public void visit(MethodCallExpr n, Void arg) {
                                     super.visit(n, arg);
-                                    if (n.getAnnotationByName("Deprecated").isPresent()) {
-                                        String methodName = n.getNameAsString();
-                                        String replacement = findReplacementForMethod(methodName);
+                                    String methodName = n.getNameAsString();
+                                    String replacement = findReplacementForMethod(deprecatedMethodsList, methodName);
+                                    if (replacement != null) {
                                         deprecatedMethods.add(Map.of("methodName", methodName, "replacement", replacement));
                                     }
                                 }
@@ -73,17 +73,16 @@ public class DeprecatedMethodsService {
         return deprecatedMethodsMap;
     }
 
-    private String findReplacementForMethod(String methodName) {
-        List<Map<String, Object>> methods = dataLoader.getMethods();
+    private String findReplacementForMethod(List<Map<String, Object>> methods, String methodName) {
         if (methods != null) {
             for (Map<String, Object> method : methods) {
-                Object methodNameValue = method.get("methodName");
+                Object methodNameValue = method.get("method");
                 if (methodNameValue != null && methodNameValue.equals(methodName)) {
                     return (String) method.get("replacement");
                 }
             }
         }
-        return "No replacement found";
+        return null;
     }
 
     private List<String> handleParseErrors(ParseResult<?> result, String fileName) {
