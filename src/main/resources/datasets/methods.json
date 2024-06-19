@@ -1,72 +1,660 @@
 [
-    {
-      "package": "java.util",
-      "class": "Hashtable",
-      "method": "enumerate",
-      "deprecatedInJava17": true,
-      "replacement": "Use keySet().iterator() or entrySet().iterator() instead."
-    },
-    {
-      "package": "java.awt",
-      "class": "Frame",
-      "method": "show",
-      "deprecatedInJava17": true,
-      "replacement": "Use setVisible(true) instead."
-    },
-    {
-      "package": "javax.security.cert",
-      "class": "Certificate",
-      "method": "getEncoded",
-      "deprecatedInJava17": true,
-      "replacement": "Use java.security.cert.Certificate instead."
-    },
-    {
-      "package": "java.sql",
-      "class": "DriverManager",
-      "method": "setLogStream",
-      "deprecatedInJava17": true,
-      "replacement": "Use setLogWriter(PrintWriter) instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Date",
-      "method": "parse",
-      "deprecatedInJava17": true,
-      "replacement": "Use DateTimeFormatter or SimpleDateFormat instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Vector",
-      "method": "addElement",
-      "deprecatedInJava17": true,
-      "replacement": "Use add(E) instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Vector",
-      "method": "removeElement",
-      "deprecatedInJava17": true,
-      "replacement": "Use remove(Object) instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Dictionary",
-      "method": "elements",
-      "deprecatedInJava17": true,
-      "replacement": "Use values().iterator() instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Observer",
-      "method": "update",
-      "deprecatedInJava17": true,
-      "replacement": "Use java.beans.PropertyChangeListener and PropertyChangeSupport instead."
-    },
-    {
-      "package": "java.util",
-      "class": "Stack",
-      "method": "empty",
-      "deprecatedInJava17": true,
-      "replacement": "Use isEmpty() instead."
-    }
-  ]
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "enumerate",
+    "deprecatedInJava17": true,
+    "replacement": "Use keySet().iterator() or entrySet().iterator() instead."
+  },
+  {
+    "package": "java.awt",
+    "class": "Frame",
+    "method": "show",
+    "deprecatedInJava17": true,
+    "replacement": "Use setVisible(true) instead."
+  },
+  {
+    "package": "javax.security.cert",
+    "class": "Certificate",
+    "method": "getEncoded",
+    "deprecatedInJava17": true,
+    "replacement": "Use java.security.cert.Certificate instead."
+  },
+  {
+    "package": "java.sql",
+    "class": "DriverManager",
+    "method": "setLogStream",
+    "deprecatedInJava17": true,
+    "replacement": "Use setLogWriter(PrintWriter) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "parse",
+    "deprecatedInJava17": true,
+    "replacement": "Use DateTimeFormatter or SimpleDateFormat instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "addElement",
+    "deprecatedInJava17": true,
+    "replacement": "Use add(E) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "removeElement",
+    "deprecatedInJava17": true,
+    "replacement": "Use remove(Object) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Dictionary",
+    "method": "elements",
+    "deprecatedInJava17": true,
+    "replacement": "Use values().iterator() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Observer",
+    "method": "update",
+    "deprecatedInJava17": true,
+    "replacement": "Use java.beans.PropertyChangeListener and PropertyChangeSupport instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Stack",
+    "method": "empty",
+    "deprecatedInJava17": true,
+    "replacement": "Use isEmpty() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getYear",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.YEAR) or LocalDate.getYear() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getMonth",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.MONTH) or LocalDate.getMonthValue() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getDate",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.DAY_OF_MONTH) or LocalDate.getDayOfMonth() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getHours",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.HOUR_OF_DAY) or LocalTime.getHour() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getMinutes",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.MINUTE) or LocalTime.getMinute() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "getSeconds",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.get(Calendar.SECOND) or LocalTime.getSecond() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setYear",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.YEAR, year) or LocalDate.withYear(year) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setMonth",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.MONTH, month) or LocalDate.withMonth(month) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setDate",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.DAY_OF_MONTH, day) or LocalDate.withDayOfMonth(day) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setHours",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.HOUR_OF_DAY, hour) or LocalTime.withHour(hour) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setMinutes",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.MINUTE, minute) or LocalTime.withMinute(minute) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Date",
+    "method": "setSeconds",
+    "deprecatedInJava17": true,
+    "replacement": "Use Calendar.set(Calendar.SECOND, second) or LocalTime.withSecond(second) instead."
+  },
+  {
+    "package": "java.awt",
+    "class": "Component",
+    "method": "enable",
+    "deprecatedInJava17": true,
+    "replacement": "Use setEnabled(true) instead."
+  },
+  {
+    "package": "java.awt",
+    "class": "Component",
+    "method": "disable",
+    "deprecatedInJava17": true,
+    "replacement": "Use setEnabled(false) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "put",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.put instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "get",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.get instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "size",
+    "deprecatedInJava17": false,
+    "replacement": "Use List.size instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "isEmpty",
+    "deprecatedInJava17": false,
+    "replacement": "Use List.isEmpty instead."
+  },
+  {
+    "package": "java.awt",
+    "class": "Window",
+    "method": "pack",
+    "deprecatedInJava17": false,
+    "replacement": "Use Frame.pack instead."
+  },
+  {
+    "package": "java.awt",
+    "class": "Window",
+    "method": "dispose",
+    "deprecatedInJava17": false,
+    "replacement": "Use Frame.dispose instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Dictionary",
+    "method": "get",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.get instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Dictionary",
+    "method": "put",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.put instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Dictionary",
+    "method": "remove",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.remove instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Dictionary",
+    "method": "size",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.size instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "elementAt",
+    "deprecatedInJava17": true,
+    "replacement": "Use get(int index) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "firstElement",
+    "deprecatedInJava17": true,
+    "replacement": "Use get(0) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Vector",
+    "method": "lastElement",
+    "deprecatedInJava17": true,
+    "replacement": "Use get(size() - 1) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Stack",
+    "method": "peek",
+    "deprecatedInJava17": false,
+    "replacement": "Use Deque.peekFirst() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Stack",
+    "method": "pop",
+    "deprecatedInJava17": false,
+    "replacement": "Use Deque.pollFirst() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Stack",
+    "method": "push",
+    "deprecatedInJava17": false,
+    "replacement": "Use Deque.offerFirst(E e) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Stack",
+    "method": "search",
+    "deprecatedInJava17": false,
+    "replacement": "Use indexOf(Object) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "clear",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.clear instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "contains",
+    "deprecatedInJava17": true,
+    "replacement": "Use containsValue(Object) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "containsKey",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.containsKey(Object) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "containsValue",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.containsValue(Object) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "isEmpty",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.isEmpty instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "keys",
+    "deprecatedInJava17": true,
+    "replacement": "Use keySet() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "keySet",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.keySet instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "putAll",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.putAll instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "rehash",
+    "deprecatedInJava17": true,
+    "replacement": "Rehashing is automatic in modern Java versions; use Map methods instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "values",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.values instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "elements",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.values().iterator() instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "entrySet",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.entrySet instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "forEach",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.forEach instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "getOrDefault",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.getOrDefault instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "merge",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.merge instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "putIfAbsent",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.putIfAbsent instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "remove",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.remove instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replaceAll",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.replaceAll instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.replace instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.replace(key, oldValue, newValue) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "clear",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.clear instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "clone",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.clone instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "containsValue",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.containsValue instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "equals",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.equals instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "hashCode",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.hashCode instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "keySet",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.keySet instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "put",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.put instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "putAll",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.putAll instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "remove",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.remove instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "size",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.size instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "toString",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.toString instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "values",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.values instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "entrySet",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.entrySet instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "forEach",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.forEach instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "getOrDefault",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.getOrDefault instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "isEmpty",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.isEmpty instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "merge",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.merge instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "putIfAbsent",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.putIfAbsent instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replaceAll",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.replaceAll instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.replace instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.replace(key, value) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "values",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.values instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "compute",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.compute instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "computeIfAbsent",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.computeIfAbsent instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "computeIfPresent",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.computeIfPresent instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "forEach",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.forEach instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "getOrDefault",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.getOrDefault instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "merge",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.merge instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "putIfAbsent",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.putIfAbsent instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replaceAll",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.replaceAll instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.replace instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "replace",
+    "deprecatedInJava17": false,
+    "replacement": "Use Map.replace(key, value) instead."
+  },
+  {
+    "package": "java.util",
+    "class": "Hashtable",
+    "method": "values",
+    "deprecatedInJava17": true,
+    "replacement": "Use Map.values instead."
+  }
+]

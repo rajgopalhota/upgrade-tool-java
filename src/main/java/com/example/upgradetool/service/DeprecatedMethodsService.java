@@ -48,6 +48,7 @@ public class DeprecatedMethodsService {
                         if (cu != null) {
                             List<Map<String, String>> deprecatedMethods = new ArrayList<>();
                             cu.accept(new VoidVisitorAdapter<Void>() {
+
                                 @Override
                                 public void visit(MethodCallExpr n, Void arg) {
                                     super.visit(n, arg);
@@ -57,6 +58,7 @@ public class DeprecatedMethodsService {
                                         deprecatedMethods.add(Map.of("methodName", methodName, "replacement", replacement));
                                     }
                                 }
+
                             }, null);
                             deprecatedMethodsMap.put(zipEntry.getName(), deprecatedMethods);
                         }
