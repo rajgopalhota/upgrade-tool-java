@@ -42,12 +42,6 @@ public class ApiPackageChecker {
                     byte[] javaFileBytes = byteArrayOutputStream.toByteArray();
                     String javaFileContent = new String(javaFileBytes);
 
-                    // Compile the Java file and capture errors
-                    List<String> compileErrors = compileJavaFile(zipEntry.getName(), javaFileContent);
-                    if (!compileErrors.isEmpty()) {
-                        deprecatedApisPackagesMap.put(zipEntry.getName() + " - Compile Errors", compileErrors);
-                    }
-
                     // Parse the Java file
                     ParseResult<CompilationUnit> result = javaParser.parse(new ByteArrayInputStream(javaFileBytes));
                     if (result.isSuccessful()) {
@@ -86,33 +80,6 @@ public class ApiPackageChecker {
             e.printStackTrace();
         }
         return deprecatedApisPackagesMap;
-    }
-
-    private List<String> compileJavaFile(String fileName, String javaFileContent) {
-        List<String> compileErrors = new ArrayList<>();
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
-        if (compiler == null) {
-            compileErrors.add("No Java compiler available");
-            return compileErrors;
-        }
-
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
-        JavaFileObject file = new SimpleJavaFileObject(URI.create("string:///" + fileName), JavaFileObject.Kind.SOURCE) {
-            @Override
-            public CharSequence getCharContent(boolean ignoreEncodingErrors) {
-                return javaFileContent;
-            }
-        };
-        Iterable<? extends JavaFileObject> compilationUnits = Collections.singletonList(file);
-        JavaCompiler.CompilationTask task = compiler.getTask(null, null, diagnostics, null, null, compilationUnits);
-        boolean success = task.call();
-        if (!success) {
-            for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
-                compileErrors.add(diagnostic.toString());
-            }
-        }
-        return compileErrors;
     }
 
     private void checkAndAddDeprecatedApis(String name, List<Map<String, Object>> apis, List<String> deprecatedApisPackages) {
