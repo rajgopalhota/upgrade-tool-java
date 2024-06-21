@@ -1,10 +1,10 @@
 import React from "react";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import * as XLSX from "xlsx";
 
 const ResponseComponent = ({ response }) => {
-  if (!response) return null; // Render nothing if response is null or undefined
+  if (!response) return null;
 
   const {
     compilationErrors,
@@ -16,128 +16,126 @@ const ResponseComponent = ({ response }) => {
   const downloadPDF = () => {
     const doc = new jsPDF();
 
-    // Add a title
-    doc.text("Detailed Output", 14, 20);
-
-    // Compilation Errors Table
+    // Add Compilation Errors table
     if (compilationErrors.length > 0) {
-      autoTable(doc, {
+      doc.text("Compilation Errors", 14, 20);
+      const errors = compilationErrors.map((error) => [
+        error.error.split(":")[0],
+        error.error,
+      ]);
+      doc.autoTable({
         head: [["File", "Error"]],
-        body: compilationErrors.map((error) => [
-          error.error.split(":")[0],
-          error.error,
-        ]),
+        body: errors,
         startY: 30,
-        theme: "striped",
-        headStyles: { fillColor: [255, 99, 71] },
       });
     }
 
-    // Deprecated Methods Table
+    // Add Deprecated Methods table
     if (Object.keys(deprecatedMethods).length > 0) {
-      autoTable(doc, {
+      doc.text("Deprecated Methods", 14, doc.lastAutoTable.finalY + 10);
+      const methods = Object.entries(deprecatedMethods).map(
+        ([filePath, methods]) => [
+          filePath,
+          methods.map((method) => method.error || method).join(", "),
+        ]
+      );
+      doc.autoTable({
         head: [["File Path", "Deprecated Methods"]],
-        body: Object.entries(deprecatedMethods).map(([filePath, methods]) => [
-          filePath,
-          methods.length > 0
-            ? methods
-                .map((method) => (method.error ? method.error : method))
-                .join("\n")
-            : "No deprecated methods",
-        ]),
-        startY: doc.previousAutoTable.finalY + 10,
-        theme: "striped",
-        headStyles: { fillColor: [255, 99, 71] },
+        body: methods,
+        startY: doc.lastAutoTable.finalY + 20,
       });
     }
 
-    // Deprecated APIs Packages Table
+    // Add Deprecated APIs Packages table
     if (Object.keys(deprecatedApisPackages).length > 0) {
-      autoTable(doc, {
+      doc.text("Deprecated APIs Packages", 14, doc.lastAutoTable.finalY + 10);
+      const apis = Object.entries(deprecatedApisPackages).map(
+        ([filePath, apis]) => [filePath, apis.join(", ")]
+      );
+      doc.autoTable({
         head: [["File Path", "Deprecated APIs"]],
-        body: Object.entries(deprecatedApisPackages).map(([filePath, apis]) => [
-          filePath,
-          apis.join("\n"),
-        ]),
-        startY: doc.previousAutoTable.finalY + 10,
-        theme: "striped",
-        headStyles: { fillColor: [255, 99, 71] },
+        body: apis,
+        startY: doc.lastAutoTable.finalY + 20,
       });
     }
 
-    // Outdated Dependencies Table
+    // Add Outdated Dependencies table
     if (outdatedDependencies.length > 0) {
-      autoTable(doc, {
+      doc.text("Outdated Dependencies", 14, doc.lastAutoTable.finalY + 10);
+      const dependencies = outdatedDependencies.map((dependency) => [
+        dependency,
+      ]);
+      doc.autoTable({
         head: [["Outdated Dependencies"]],
-        body: outdatedDependencies.map((dependency) => [dependency]),
-        startY: doc.previousAutoTable.finalY + 10,
-        theme: "striped",
-        headStyles: { fillColor: [255, 99, 71] },
+        body: dependencies,
+        startY: doc.lastAutoTable.finalY + 20,
       });
     }
 
-    // Save the PDF
-    doc.save("Detailed_Output.pdf");
+    doc.save("report.pdf");
   };
 
   const downloadExcel = () => {
     const workbook = XLSX.utils.book_new();
 
-    // Compilation Errors Sheet
+    // Add Compilation Errors sheet
     if (compilationErrors.length > 0) {
-      const ws_data = [
+      const wsData = [
         ["File", "Error"],
         ...compilationErrors.map((error) => [
           error.error.split(":")[0],
           error.error,
         ]),
       ];
-      const ws = XLSX.utils.aoa_to_sheet(ws_data);
-      XLSX.utils.book_append_sheet(workbook, ws, "Compilation Errors");
+      const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Compilation Errors");
     }
 
-    // Deprecated Methods Sheet
+    // Add Deprecated Methods sheet
     if (Object.keys(deprecatedMethods).length > 0) {
-      const ws_data = [
+      const wsData = [
         ["File Path", "Deprecated Methods"],
         ...Object.entries(deprecatedMethods).map(([filePath, methods]) => [
           filePath,
-          methods.length > 0
-            ? methods
-                .map((method) => (method.error ? method.error : method))
-                .join("\n")
-            : "No deprecated methods",
+          methods.map((method) => method.error || method).join(", "),
         ]),
       ];
-      const ws = XLSX.utils.aoa_to_sheet(ws_data);
-      XLSX.utils.book_append_sheet(workbook, ws, "Deprecated Methods");
+      const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Deprecated Methods");
     }
 
-    // Deprecated APIs Packages Sheet
+    // Add Deprecated APIs Packages sheet
     if (Object.keys(deprecatedApisPackages).length > 0) {
-      const ws_data = [
+      const wsData = [
         ["File Path", "Deprecated APIs"],
         ...Object.entries(deprecatedApisPackages).map(([filePath, apis]) => [
           filePath,
-          apis.join("\n"),
+          apis.join(", "),
         ]),
       ];
-      const ws = XLSX.utils.aoa_to_sheet(ws_data);
-      XLSX.utils.book_append_sheet(workbook, ws, "Deprecated APIs");
+      const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Deprecated APIs Packages"
+      );
     }
 
-    // Outdated Dependencies Sheet
+    // Add Outdated Dependencies sheet
     if (outdatedDependencies.length > 0) {
-      const ws_data = [
+      const wsData = [
         ["Outdated Dependencies"],
         ...outdatedDependencies.map((dependency) => [dependency]),
       ];
-      const ws = XLSX.utils.aoa_to_sheet(ws_data);
-      XLSX.utils.book_append_sheet(workbook, ws, "Outdated Dependencies");
+      const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+      XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Outdated Dependencies"
+      );
     }
 
-    // Save the Excel file
-    XLSX.writeFile(workbook, "Detailed_Output.xlsx");
+    XLSX.writeFile(workbook, "report.xlsx");
   };
 
   return (
@@ -146,6 +144,7 @@ const ResponseComponent = ({ response }) => {
         Here's the detailed output for your uploaded file!
       </h2>
 
+      {/* Buttons for download */}
       <div className="mb-4">
         <button
           onClick={downloadPDF}
@@ -256,6 +255,7 @@ const ResponseComponent = ({ response }) => {
                     className={index % 2 === 0 ? "bg-sky-100" : "bg-white"}
                   >
                     <td className="border px-4 py-2">{filePath}</td>
+
                     <td className="border px-4 py-2">
                       {apis.map((api, idx) => (
                         <p key={idx}>{api}</p>
