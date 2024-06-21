@@ -1,0 +1,301 @@
+import React from "react";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+
+const ResponseComponent = ({ response }) => {
+  if (!response) return null; // Render nothing if response is null or undefined
+
+  const {
+    compilationErrors,
+    deprecatedMethods,
+    deprecatedApisPackages,
+    outdatedDependencies,
+  } = response;
+
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+
+    // Add a title
+    doc.text("Detailed Output", 14, 20);
+
+    // Compilation Errors Table
+    if (compilationErrors.length > 0) {
+      autoTable(doc, {
+        head: [["File", "Error"]],
+        body: compilationErrors.map((error) => [
+          error.error.split(":")[0],
+          error.error,
+        ]),
+        startY: 30,
+        theme: "striped",
+        headStyles: { fillColor: [255, 99, 71] },
+      });
+    }
+
+    // Deprecated Methods Table
+    if (Object.keys(deprecatedMethods).length > 0) {
+      autoTable(doc, {
+        head: [["File Path", "Deprecated Methods"]],
+        body: Object.entries(deprecatedMethods).map(([filePath, methods]) => [
+          filePath,
+          methods.length > 0
+            ? methods
+                .map((method) => (method.error ? method.error : method))
+                .join("\n")
+            : "No deprecated methods",
+        ]),
+        startY: doc.previousAutoTable.finalY + 10,
+        theme: "striped",
+        headStyles: { fillColor: [255, 99, 71] },
+      });
+    }
+
+    // Deprecated APIs Packages Table
+    if (Object.keys(deprecatedApisPackages).length > 0) {
+      autoTable(doc, {
+        head: [["File Path", "Deprecated APIs"]],
+        body: Object.entries(deprecatedApisPackages).map(([filePath, apis]) => [
+          filePath,
+          apis.join("\n"),
+        ]),
+        startY: doc.previousAutoTable.finalY + 10,
+        theme: "striped",
+        headStyles: { fillColor: [255, 99, 71] },
+      });
+    }
+
+    // Outdated Dependencies Table
+    if (outdatedDependencies.length > 0) {
+      autoTable(doc, {
+        head: [["Outdated Dependencies"]],
+        body: outdatedDependencies.map((dependency) => [dependency]),
+        startY: doc.previousAutoTable.finalY + 10,
+        theme: "striped",
+        headStyles: { fillColor: [255, 99, 71] },
+      });
+    }
+
+    // Save the PDF
+    doc.save("Detailed_Output.pdf");
+  };
+
+  const downloadExcel = () => {
+    const workbook = XLSX.utils.book_new();
+
+    // Compilation Errors Sheet
+    if (compilationErrors.length > 0) {
+      const ws_data = [
+        ["File", "Error"],
+        ...compilationErrors.map((error) => [
+          error.error.split(":")[0],
+          error.error,
+        ]),
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(workbook, ws, "Compilation Errors");
+    }
+
+    // Deprecated Methods Sheet
+    if (Object.keys(deprecatedMethods).length > 0) {
+      const ws_data = [
+        ["File Path", "Deprecated Methods"],
+        ...Object.entries(deprecatedMethods).map(([filePath, methods]) => [
+          filePath,
+          methods.length > 0
+            ? methods
+                .map((method) => (method.error ? method.error : method))
+                .join("\n")
+            : "No deprecated methods",
+        ]),
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(workbook, ws, "Deprecated Methods");
+    }
+
+    // Deprecated APIs Packages Sheet
+    if (Object.keys(deprecatedApisPackages).length > 0) {
+      const ws_data = [
+        ["File Path", "Deprecated APIs"],
+        ...Object.entries(deprecatedApisPackages).map(([filePath, apis]) => [
+          filePath,
+          apis.join("\n"),
+        ]),
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(workbook, ws, "Deprecated APIs");
+    }
+
+    // Outdated Dependencies Sheet
+    if (outdatedDependencies.length > 0) {
+      const ws_data = [
+        ["Outdated Dependencies"],
+        ...outdatedDependencies.map((dependency) => [dependency]),
+      ];
+      const ws = XLSX.utils.aoa_to_sheet(ws_data);
+      XLSX.utils.book_append_sheet(workbook, ws, "Outdated Dependencies");
+    }
+
+    // Save the Excel file
+    XLSX.writeFile(workbook, "Detailed_Output.xlsx");
+  };
+
+  return (
+    <div className="m-6">
+      <h2 className="text-lg font-semibold mb-4">
+        Here's the detailed output for your uploaded file!
+      </h2>
+
+      <div className="mb-4">
+        <button
+          onClick={downloadPDF}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+        >
+          Download as PDF
+        </button>
+        <button
+          onClick={downloadExcel}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Download as Excel
+        </button>
+      </div>
+
+      {/* Compilation Errors Table */}
+      {compilationErrors.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">Compilation Errors</h3>
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr className="bg-orange-900 text-white">
+                <th className="border px-4 py-2 text-left">File</th>
+                <th className="border px-4 py-2 text-left">Error</th>
+              </tr>
+            </thead>
+            <tbody>
+              {compilationErrors.map((error, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-sky-100" : "bg-white"}
+                >
+                  <td className="border px-4 py-2">
+                    {error.error.split(":")[0]}
+                  </td>
+                  <td className="border px-4 py-2">{error.error}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Deprecated Methods Table */}
+      {Object.keys(deprecatedMethods).length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">Deprecated Methods</h3>
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr className="bg-orange-900 text-white">
+                <th className="border px-4 py-2 text-left">File Path</th>
+                <th className="border px-4 py-2 text-left">
+                  Deprecated Methods
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(deprecatedMethods).map(
+                ([filePath, methods], index) => (
+                  <tr
+                    key={filePath}
+                    className={index % 2 === 0 ? "bg-sky-100" : "bg-white"}
+                  >
+                    <td className="border px-4 py-2">{filePath}</td>
+                    <td
+                      className="border px-4 py-2"
+                      style={{
+                        backgroundColor:
+                          methods.length > 0 ? "lightorange" : "",
+                      }}
+                    >
+                      {methods.length > 0 ? (
+                        methods.map((method, idx) => (
+                          <p key={idx}>
+                            {method.error ? method.error : method}
+                          </p>
+                        ))
+                      ) : (
+                        <p>No deprecated methods</p>
+                      )}
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Deprecated APIs Packages Table */}
+      {Object.keys(deprecatedApisPackages).length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">
+            Deprecated APIs Packages
+          </h3>
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr className="bg-orange-900 text-white">
+                <th className="border px-4 py-2 text-left">File Path</th>
+                <th className="border px-4 py-2 text-left">Deprecated APIs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(deprecatedApisPackages).map(
+                ([filePath, apis], index) => (
+                  <tr
+                    key={filePath}
+                    className={index % 2 === 0 ? "bg-sky-100" : "bg-white"}
+                  >
+                    <td className="border px-4 py-2">{filePath}</td>
+                    <td className="border px-4 py-2">
+                      {apis.map((api, idx) => (
+                        <p key={idx}>{api}</p>
+                      ))}
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Outdated Dependencies Table */}
+      {outdatedDependencies.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">Outdated Dependencies</h3>
+          <table className="table-auto w-full border-collapse">
+            <thead>
+              <tr className="bg-orange-900 text-white">
+                <th className="border px-4 py-2 text-left">
+                  Outdated Dependencies
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {outdatedDependencies.map((dependency, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-sky-100" : "bg-white"}
+                >
+                  <td className="border px-4 py-2">{dependency}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ResponseComponent;
