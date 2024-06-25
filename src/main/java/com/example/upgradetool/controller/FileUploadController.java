@@ -1,8 +1,6 @@
 package com.example.upgradetool.controller;
 
-import com.example.upgradetool.service.DeprecatedMethodsService;
-import com.example.upgradetool.service.DependencyChecker;
-import com.example.upgradetool.service.ApiPackageChecker;
+import com.example.upgradetool.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +26,9 @@ public class FileUploadController {
     @Autowired
     private ApiPackageChecker apiPackageChecker;
 
+    @Autowired
+    private DTOChecker dtoCheckerService;
+
     @PostMapping("/upload")
     public Map<String, Object> uploadAndAnalyze(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
@@ -42,6 +43,7 @@ public class FileUploadController {
                 Map<String, List<Map<String, String>>> deprecatedMethods = deprecatedMethodsService.findDeprecatedMethodsInZip(Files.newInputStream(tempFilePath));
                 Map<String, List<String>> deprecatedApisPackages = apiPackageChecker.findDeprecatedApisPackages(Files.newInputStream(tempFilePath));
                 List<Map<String, String>> compilationErrors = deprecatedMethodsService.getCompilationErrors(Files.newInputStream(tempFilePath));
+                List<String> dtoSuggestions = dtoCheckerService.checkForDtosAndSuggestRecords(Files.newInputStream(tempFilePath));
 
                 // Clean up temporary file
                 Files.delete(tempFilePath);
@@ -51,7 +53,8 @@ public class FileUploadController {
                         "outdatedDependencies", outdatedDependencies,
                         "deprecatedMethods", deprecatedMethods,
                         "deprecatedApisPackages", deprecatedApisPackages,
-                        "compilationErrors", compilationErrors
+                        "compilationErrors", compilationErrors,
+                        "dtoSuggestions", dtoSuggestions
                 );
             } catch (IOException e) {
                 e.printStackTrace();
